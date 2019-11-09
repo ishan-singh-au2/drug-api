@@ -41,5 +41,14 @@ app.get('/api/get-single-medicine/:medicineName', (req, res) => {
     })
 })
 
+app.post('/api/add-single-medicine', (req, res) => {
+    try {
+        db.medications[0][req.body.drugClassName].push(req.body.data)
+        res.json({ data: { success: true } })
+    } catch (error) {
+        res.json({ data: { success: false } })
+    }
+})
+
 
 const listener = app.listen(8080, _ => console.log(`server running on ${listener.address().port}`))
