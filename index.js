@@ -30,5 +30,16 @@ app.post('/api/delete-drug-class', (req, res) => {
     res.json({ success: flag })
 })
 
+app.get('/api/get-single-medicine/:medicineName', (req, res) => {
+    res.json({
+        data: Object.values(db.medications[0])
+            .find(drug =>
+                drug.find(med =>
+                    med.name === req.params.medicineName
+                )
+            )[0]
+    })
+})
+
 
 const listener = app.listen(8080, _ => console.log(`server running on ${listener.address().port}`))
