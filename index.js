@@ -68,5 +68,30 @@ app.post('/api/update-single-medicine', (req, res) => {
     res.json({ data: { success: flag } })
 })
 
+app.post('/api/delete-single-medicine', (req, res) => {
+    let flag = false
+    Object.values(db.medications[0])
+        .forEach(drug =>
+            drug.forEach((med, i, a) => {
+                if (med.name === req.body.medicineName) {
+                    a.splice(i, 1)
+                    flag = true
+                }
+            })
+        )
+
+    res.json({
+        data: {
+            success:
+                Object.values(db.medications[0])
+                    .every(drug =>
+                        drug.every((med, i, a) =>
+                            med.name !== req.body.medicineName
+                        )
+                    ) && flag
+                    ? true : false
+        }
+    })
+})
 
 const listener = app.listen(8080, _ => console.log(`server running on ${listener.address().port}`))
